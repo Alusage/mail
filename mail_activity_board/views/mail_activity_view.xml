@@ -62,13 +62,16 @@
                 <field name="res_name" string="Origin" />
             </xpath>
 
+            <!-- Odoo 20 dropped filter_date_deadline_future (the deadline filters are
+                 now tomorrow/week), and core already owns the name date_deadline for
+                 its group-by filter, so this one is anchored and named apart. -->
             <xpath
-                expr='//filter[@name="filter_date_deadline_future"]'
+                expr='//filter[@name="filter_date_deadline_week"]'
                 position='after'
             >
                 <filter
                     string="Deadline"
-                    name="date_deadline"
+                    name="filter_date_deadline_range"
                     date="date_deadline"
                     start_year="0"
                     start_month="-1"
@@ -97,6 +100,9 @@
         <field name="sequence" eval="2" />
         <field name="act_window_id" ref="mail.mail_activity_action_my" />
     </record>
+    <!-- Odoo 20 core already declares list/kanban/calendar/pivot/graph for
+         mail.mail_activity_action_my; re-adding one violates
+         ir_act_window_view_unique_mode_per_action. Only form is missing. -->
     <record id="mail_activity_action_my_view_form" model="ir.actions.act_window.view">
         <field name="sequence" eval="3" />
         <field name="view_mode">form</field>
@@ -108,16 +114,6 @@
     >
         <field name="sequence" eval="4" />
         <field name="view_mode">calendar</field>
-        <field name="act_window_id" ref="mail.mail_activity_action_my" />
-    </record>
-    <record id="mail_activity_action_my_view_pivot" model="ir.actions.act_window.view">
-        <field name="sequence" eval="5" />
-        <field name="view_mode">pivot</field>
-        <field name="act_window_id" ref="mail.mail_activity_action_my" />
-    </record>
-    <record id="mail_activity_action_my_view_graph" model="ir.actions.act_window.view">
-        <field name="sequence" eval="6" />
-        <field name="view_mode">graph</field>
         <field name="act_window_id" ref="mail.mail_activity_action_my" />
     </record>
     <record id="mail.mail_activity_action_my" model="ir.actions.act_window">
